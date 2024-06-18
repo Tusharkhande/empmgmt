@@ -1,35 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EmployeeService from "../services/EmployeeService";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const AddEmployee = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emailId, setEmailId] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newEmployee = { firstName, lastName, emailId };
 
-    EmployeeService.addEmployee(newEmployee)
-      .then((res) => {
-        console.log("Employee added successfully:", res.data);
-        setFirstName("");
-        setLastName("");
-        setEmailId("");
-        navigate("/employees");
-      })
-      .catch((err) => {
-        console.log("Error adding employee:", err);
-      });
+    if (id) {
+      EmployeeService.updateEmployee(id, newEmployee)
+        .then((res) => {
+          navigate("/employees");
+        })
+        .catch((err) => {
+          console.log("Error updating employee:", err);
+        });
+    } else {
+      EmployeeService.addEmployee(newEmployee)
+        .then((res) => {
+          setFirstName("");
+          setLastName("");
+          setEmailId("");
+          navigate("/employees");
+        })
+        .catch((err) => {
+          console.log("Error adding employee:", err);
+        });
+    }
   };
+
+  useEffect(() => {
+    if (id) {
+      EmployeeService.getEmployeeById(id)
+        .then((res) => {
+          const employee = res.data;
+          setFirstName(employee.firstName);
+          setLastName(employee.lastName);
+          setEmailId(employee.emailId);
+        })
+        .catch((err) => {
+          console.log("Error fetching employee:", err);
+        });
+    }
+  }, []);
+
+  const title = id ? "Edit Employee" : "Add Employee";
 
   return (
     <div className="flex mt-5 mb-10 min-h-full items-center justify-center h-full bg-slate-300">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Add Employee</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">{title}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="firstName" className="block text-gray-700">
