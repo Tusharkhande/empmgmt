@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import EmployeeService from "../services/EmployeeService";
 import add from "../assets/icons/add.png";
 import { Link } from "react-router-dom";
-import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrashAlt, FaUser, FaUserEdit, FaUserPlus } from "react-icons/fa";
 
 const ListEmployees = () => {
   const [employees, setEmployees] = useState([]);
@@ -34,13 +34,14 @@ const ListEmployees = () => {
   return (
     <div className="flex mt-5 mb-10 min-h-full w-full items-center justify-center h-full bg-slate-300">
       <div className="overflow-x-auto text-center">
-        <div className="flex justify-between items-center mb-4">
-          <span className="font-bold text-lg">Employee Details...</span>
+        <div className="flex justify-end mb-4">
+          {/* <span className="font-bold text-lg">Employee Details...</span> */}
           <Link
             to={"/add-employee"}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+            className="bg-blue-600 text-white px-3 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
           >
-            <img src={add} alt="Add" className="w-6 h-6" />
+            {/* <img src={add} alt="Add" className="w-6 h-6" /> */}
+            <FaUserPlus/>
           </Link>
         </div>
         <table className="min-w-full bg-white shadow-md rounded-xl">
@@ -66,6 +67,7 @@ const ListEmployees = () => {
                   <Link
                     to={`/view-employee/${employee.id}`}
                     className="text-blue-600 hover:underline"
+                    
                   >
                     <FaEye />
                   </Link>
@@ -73,6 +75,7 @@ const ListEmployees = () => {
                 <td className="py-3 px-4">
                   <Link
                     to={`/edit-employee/${employee.id}`}
+                    state={{employee}}
                     className="text-blue-600 hover:underline"
                   >
                     <FaEdit />
