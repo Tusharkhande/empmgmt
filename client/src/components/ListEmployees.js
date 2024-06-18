@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import EmployeeService from "../services/EmployeeService";
 import add from "../assets/icons/add.png";
 import { Link } from "react-router-dom";
+import {FaTrashAlt} from 'react-icons/fa';
 
 const ListEmployees = () => {
   const [employees, setEmployees] = useState([]);
@@ -28,10 +29,11 @@ const ListEmployees = () => {
     <table className="min-w-full bg-white shadow-md rounded-xl">
       <thead>
         <tr className="bg-blue-gray-100 text-gray-700">
-          <th className="py-3 px-4 text-left">Employee ID</th>
-          <th className="py-3 px-4 text-left">First Name</th>
-          <th className="py-3 px-4 text-left">Last Name</th>
-          <th className="py-3 px-4 text-left">Email ID</th>
+          <th className="py-3 px-4 text-center">Employee ID</th>
+          <th className="py-3 px-4 text-center">First Name</th>
+          <th className="py-3 px-4 text-center">Last Name</th>
+          <th className="py-3 px-4 text-center">Email ID</th>
+          <th className="py-3 px-4 text-center" colSpan={"3"}>Actions</th>
         </tr>
       </thead>
       <tbody className="text-blue-gray-900">
@@ -42,6 +44,15 @@ const ListEmployees = () => {
                     <td className="py-3 px-4">{employee.firstName}</td>
                     <td className="py-3 px-4">{employee.lastName}</td>
                     <td className="py-3 px-4">{employee.emailId}</td>
+                    <td className="py-3 px-4">
+                        <Link to={`/view-employee/${employee.id}`} className="text-blue-600 hover:underline">View</Link>
+                    </td>
+                    <td className="py-3 px-4">
+                        <Link to={`/edit-employee/${employee.id}`} className="text-blue-600 hover:underline">Edit</Link>
+                    </td>
+                    <td className="py-3 px-4">
+                        <Link to={`/delete-employee/${employee.id}`} className="text-red-600 hover:underline">Delete</Link>
+                    </td>
                 </tr>
             ))
         }
